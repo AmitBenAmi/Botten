@@ -41,7 +41,7 @@ var util = require('util');
 function sendInline(session, filePath, contentType, attachmentFileName) {
     fs.readFile(filePath, (err, data) => {
         if (err) {
-            return session.send('Oops. Error reading file.');
+            return session.send('Oops. Error reading file. Error: ' + err.message);
         }
 
         var base64 = Buffer.from(data).toString('base64');
