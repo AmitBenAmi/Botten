@@ -1,3 +1,4 @@
+var http = require('http');
 var Trakt = require('trakt.tv');
 
 var traktMessage = {};
@@ -13,7 +14,23 @@ traktMessage.FindPopulars = function (Callback, populars) {
     trakt[populars].popular({
         pagination: false
     }).then(response => {
-        Callback(response);
+        http.get(`http://imdb.wemakesites.net/api/${ response[0].ids.imdb }?api_key=fa97b5b3-f918-4c2d-af92-9c4d3d6244af`,
+                 res => {
+                     var body = '';
+                     res.on('data', chunk => {
+                         body += chunk;                         
+                     });
+
+                     res.on('end', () => {
+                         var imdbResponse = JSON.parse(body);
+
+                         // Invoking the callback with the data from imdb
+                         Callback({
+                            title: response[0].title,
+                            image: imdbResponse.data.image
+                         });
+                     });
+        });
     });
 };
 
