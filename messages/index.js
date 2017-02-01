@@ -52,6 +52,8 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     trakttv.FindPopularMovies(callback);
 })
 .matches('Weather', (session, args) => {
+
+    try{
     // Require the module 
 var Forecast = require('forecast');
  
@@ -80,6 +82,8 @@ forecast.get([-33.8683, 151.2086], true, function(err, weather) {
 });
 
     session.send("Weather" + weather, session.message.text);
+} 
+    catch(ex){  session.send("Weather error" + ex, session.message.text);}
 })
 .matches('shani', (session, args) => {
     session.send('is the best', session.message.text);
