@@ -50,14 +50,22 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     } else {
         messageNudger.cancelTimer(session);
     }
+
+    for (var i = 0; i < args.entities.length; i++) {
+        session.send((i + 1).toString() + ') ' + args.entities[i].entity + ', ' + args.entities[i].type + '\n\n', session.message.text);
+    }
+
+    for (var i = 0; i < session.message.entities.length; i++) {
+        session.send((i + 1).toString() + ') ' + session.message.entities[i].entity + ', ' + session.message.entities[i].type + '\n\n', session.message.text);
+    }
 })
 .matches('Watch', (session, args) => {
     messageNudger.cancelTimer(session);
     var moviesCallback = function (movies) {
 
-        var messageBack = 'When you have some free time you should go see ';
+        var messageBack = 'When you have some free time you should go see \';
         for (var i = 0; i < movies.length; i++) {
-            messageBack += movies[i].title + '. It\'s a real great movie..\n\n';
+            messageBack += movies[i].title + '\'. It\'s a real great movie..\n\n';
             messageBack += movies[i].image;
         }
 
@@ -66,9 +74,9 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 
     var showsCallback = function (shows) {
 
-        var messageBack = 'I\'ve heard about a real good show called ';
+        var messageBack = 'I\'ve heard about a real good show called \'';
         for (var i = 0; i < shows.length; i++) {
-            messageBack += shows[i].title + '.\n\n';
+            messageBack += shows[i].title + '\'.\n\n';
             messageBack += shows[i].image;
         }
 

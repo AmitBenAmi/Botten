@@ -42,4 +42,29 @@ traktMessage.FindPopularShows = function (Callback) {
     this.FindPopulars(Callback, 'shows');
 };
 
+traktMessage.searchForItem = function (text, Callback) {
+    trakt.search.text({
+        query: `${ text }`,
+        type: 'movie,show,person'
+    }).then(queryResponse => {
+        http.get(`http://imdb.wemakesites.net/api/${ queryResponse[0].ids.imdb }?api_key=fa97b5b3-f918-4c2d-af92-9c4d3d6244af`,
+                 res => {
+                     var body = '';
+                     res.on('data', chunk => {
+                         body += chunk;                         
+                     });
+
+                     res.on('end', () => {
+                         var imdbResponse = JSON.parse(body);
+
+                         // Invoking the callback with the data from imdb
+                         Callback({
+                            title: queryResponse[0].title,
+                            image: imdbResponse.data.image
+                         });
+                     });
+        });
+    });
+};
+
 module.exports = traktMessage;
