@@ -26,6 +26,8 @@ var luisAPIHostName = process.env.LuisAPIHostName || 'api.projectoxford.ai';
 
 const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
 
+var emojis = require('node-emoji');
+
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] })
@@ -33,7 +35,8 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
 .matches('None', (session, args) => {
-    session.send('\xF0\x9F\x98\x81', session.message.text);
+    session.send(args, session.message.test);
+    session.send(emojis.get('coffee'), session.message.text);
 })
 .matches('Watch', (session, args) => {
     session.send('Hi you motherfucker!!!', session.message.text);
@@ -41,7 +44,13 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('Weather', (session, args) => {
     session.send('מתי יעלו את המשכורת של הקצינים?', session.message.text);
 })
+<<<<<<< HEAD
 
+=======
+.matches('shani', (session, args) => {
+    session.send('is the best', session.message.text);
+})
+>>>>>>> 2046fdb2c5da53164a8be975f997ba257f364f31
 .onDefault((session) => {
     //session.send('Sorry, I did not understand \'%s\'.', session.message.text);
 });
