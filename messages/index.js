@@ -49,6 +49,8 @@ function sendInline(session, filePath, contentType, attachmentFileName) {
             return session.send('Oops. Error reading file. Error: ' + err.message);
         }
 
+        session.send('Sending message');
+
         var base64 = Buffer.from(data).toString('base64');
 
         var msg = new builder.Message(session)
