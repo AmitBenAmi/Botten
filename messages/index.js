@@ -33,7 +33,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
 .matches('None', (session, args) => {
-    session.send('\xF0\x9F\x98\x81', session.message.text);
+    session.send('💙', session.message.text);
 })
 .matches('Watch', (session, args) => {
     session.send('Hi you motherfucker!!!', session.message.text);
