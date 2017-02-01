@@ -50,12 +50,15 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('shani', (session, args) => {
     session.send('is the best', session.message.text);
 })
+
 .matches('NoAnswer', (session, args) => {
     session.send('is the best', session.message.text);
 })
+
 .onDefault((session) => {
-    
-});
+    session.send('Sorry, I did not understand \'%s\'.', session.message.text);
+}); 
+
 
 bot.dialog('/', intents);    
 
