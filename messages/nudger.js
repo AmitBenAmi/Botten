@@ -28,7 +28,8 @@ class messageWatingForAnswer {
     sendMessage(thisObject) {
         return function() {
             if (thisObject.session != undefined) {
-                thisObject.session.send("נשאלה שאלה, עברו 10 שניות, מה עם תשובה?!");
+                var user = thisObject.session.message.address.user.name
+                thisObject.session.send(`נשאלה שאלה על ידי ${ user }, עברו 10 שניות, מה עם תשובה?!`);
                 thisObject.session = undefined;
                 thisObject.gotMessage = false;
             }
