@@ -44,13 +44,9 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('Weather', (session, args) => {
     session.send('מתי יעלו את המשכורת של הקצינים?', session.message.text);
 })
-<<<<<<< HEAD
-
-=======
 .matches('shani', (session, args) => {
     session.send('is the best', session.message.text);
 })
->>>>>>> 2046fdb2c5da53164a8be975f997ba257f364f31
 .onDefault((session) => {
     //session.send('Sorry, I did not understand \'%s\'.', session.message.text);
 });
