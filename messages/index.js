@@ -27,6 +27,8 @@ var luisAPIHostName = process.env.LuisAPIHostName || 'api.projectoxford.ai';
 const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
 
 var emojis = require('node-emoji');
+var nudger = require('./nudger');
+var messageNudger = new nudger(undefined);
 
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
@@ -37,6 +39,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('None', (session, args) => {
     session.send(args, session.message.test);
     session.send(emojis.get('coffee'), session.message.text);
+    messageNudger(session);
 })
 .matches('Watch', (session, args) => {
     session.send('Hi you motherfucker!!!', session.message.text);
@@ -47,8 +50,11 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('shani', (session, args) => {
     session.send('is the best', session.message.text);
 })
+.matches('NoAnswer', (session, args) => {
+    session.send('is the best', session.message.text);
+})
 .onDefault((session) => {
-    //session.send('Sorry, I did not understand \'%s\'.', session.message.text);
+    
 });
 
 bot.dialog('/', intents);    
