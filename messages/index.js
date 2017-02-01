@@ -34,6 +34,9 @@ var emojis = require('node-emoji');
 var nudger = require('./nudger');
 var trakttv = require('../SeriesAPI/Trakt.tv');
 var messageNudger = new nudger();
+var Forecast = require('forecast');
+
+
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] })
@@ -42,9 +45,14 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 */
 .matches('None', (session, args) => {
     session.send(emojis.get('coffee'), session.message.text);
-    messageNudger.setNewMessage(session);
+    if (session.message.text.includes("?")) {
+         messageNudger.setNewMessage(session,true);
+    } else {
+        messageNudger.cancelTimer(session);
+    }
 })
-.matches('Watch', (session, args, next) => {
+.matches('Watch', (session, args) => {
+    messageNudger.cancelTimer(session);
     var moviesCallback = function (movies) {
 
         var messageBack = 'When you have some free time you should go see ';
@@ -83,9 +91,9 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     }
 })
 .matches('Weather', (session, args) => {
-  try{
-    // Require the module 
-var Forecast = require('forecast');
+    messageNudger.cancelTimer(session);
+    try{
+
  
 // Initialize 
 var forecast = new Forecast({
@@ -99,21 +107,30 @@ var forecast = new Forecast({
   }
 });
 
-// Retrieve weather information from coordinates (Sydney, Australia) 
-forecast.get([-33.8683, 151.2086], function(err, weather) {
-         session.send(weather.daily.data[0].summary, session.message.text);
+forecast.get([32.055614, 34.858787], function(err, weather) {
+         session.send("currently weather " + "at timezone " + weather.timezone +" is:" + weather.daily.data[0].summary , session.message.text);
 });
 } 
     catch(ex){session.send("Weather error", session.message.text);}
 
 })
+.matches('surf', (session, args) => {
+    messageNudger.cancelTimer(session);
+    var user =  session.message.address.user.name
+    session.send(`${ user } you asked about surfing ! you should know surf is the best sport ever!`, session.message.text);
+})
 .matches('shani', (session, args) => {
+    messageNudger.cancelTimer(session);
     session.send('is the best', session.message.text);
 })
 .onDefault((session) => {
       session.send('Sorry, I did not understand \'%s\'.', session.message.text);
     //session.send('Sorry, I did not understand \'%s\'.', session.message.text);
-
+    // if (session.message.text.includes("?")) {
+    //      messageNudger.setNewMessage(session, true);
+    // } else {
+    //     messageNudger.cancelTimer(session);
+    // }
 });
 
 bot.dialog('/', intents);    

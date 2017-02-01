@@ -6,8 +6,8 @@ class messageWatingForAnswer {
     constructor() {
     }
 
-    setNewMessage(session) {
-        if (!this.gotMessage) {
+    setNewMessage(session, isQuestion) {
+        if (!this.gotMessage || (this.gotMessage && isQuestion)) {
             this.gotMessage = true;
             this.session = session;
             this.timeout = timers.setTimeout(this.sendMessage(this),timeInSeconds*1000);
@@ -19,10 +19,17 @@ class messageWatingForAnswer {
         }
     }
 
+    cancelTimer() {
+        if (this.timeout != undefined) {
+            timers.clearTimeout(this.timeout);
+        }
+    }
+
     sendMessage(thisObject) {
         return function() {
             if (thisObject.session != undefined) {
-                thisObject.session.send("נשאלה שאלה, עברו 10 שניות, מה עם תשובה?!");
+                var user = thisObject.session.message.address.user.name
+                thisObject.session.send(`נשאלה שאלה על ידי ${ user }, עברו 10 שניות, מה עם תשובה?!`);
                 thisObject.session = undefined;
                 thisObject.gotMessage = false;
             }
