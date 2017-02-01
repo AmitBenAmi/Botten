@@ -3,9 +3,7 @@ var timers = require('timers');
 var timeInSeconds = 2;
 
 class messageWatingForAnswer {
-    constructor(session) {
-        this.session = session
-        this.setNewMessage(session)
+    constructor() {
     }
 
     setNewMessage(session) {
