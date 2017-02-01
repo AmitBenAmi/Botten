@@ -44,7 +44,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
 .matches('None', (session, args) => {
-    session.send(emojis.get('coffee'), session.message.text);
+    session.send(emojis.get('question-mark'), session.message.text);
     if (session.message.text.includes("?")) {
          messageNudger.setNewMessage(session,true);
     } else {
@@ -52,11 +52,11 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     }
 
     for (var i = 0; i < args.entities.length; i++) {
-        session.send((i + 1).toString() + ') ' + args.entities[i].entity + ', ' + args.entities[i].type + '\n\n', session.message.text);
+        session.send('args\n\n' + (i + 1).toString() + ') ' + args.entities[i].entity + ', ' + args.entities[i].type + '\n\n', session.message.text);
     }
 
     for (var i = 0; i < session.message.entities.length; i++) {
-        session.send((i + 1).toString() + ') ' + session.message.entities[i].entity + ', ' + session.message.entities[i].type + '\n\n', session.message.text);
+        session.send('message\n\n' + (i + 1).toString() + ') ' + session.message.entities[i].entity + ', ' + session.message.entities[i].type + '\n\n', session.message.text);
     }
 })
 .matches('Watch', (session, args) => {
