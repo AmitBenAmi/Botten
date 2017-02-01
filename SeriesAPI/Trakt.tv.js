@@ -13,7 +13,7 @@ traktMessage.FindPopularMovies = function (Callback) {
     trakt.movies.popular({
         pagination: false
     }).then(response => {
-        callback (response);
+        Callback(response);
     });
 };
 
