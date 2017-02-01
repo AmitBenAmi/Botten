@@ -45,7 +45,6 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     messageNudger.setNewMessage(session);
 })
 .matches('Watch', (session, args) => {
-    session.send('', session.message.text);
     var callback = function (movies) {
 
         var messageBack = 'I can suggest you few very popular movies:\n';
