@@ -63,7 +63,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     messageNudger.cancelTimer(session);
     var moviesCallback = function (movies) {
 
-        var messageBack = 'When you have some free time you should go see \';
+        var messageBack = 'When you have some free time you should go see \'';
         for (var i = 0; i < movies.length; i++) {
             messageBack += movies[i].title + '\'. It\'s a real great movie..\n\n';
             messageBack += movies[i].image;
