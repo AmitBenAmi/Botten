@@ -38,6 +38,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 */
 .matches('None', (session, args) => {
     session.send(emojis.get('coffee'), session.message.text);
+    messageNudger.setNewMessage(session)
 })
 .matches('Watch', (session, args) => {
     session.send('Hi you motherfucker!!!', session.message.text);
@@ -60,7 +61,7 @@ if (useEmulator) {
     server.listen(3978, function() {
         console.log('test bot endpont at http://localhost:3978/api/messages');
     });
-    server.post('/api/messages', connector.listen());    
+    server.get('/api/messages', connector.listen());    
 } else {
     module.exports = { default: connector.listen() }
 }
