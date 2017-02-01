@@ -29,6 +29,7 @@ const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' +
 
 var emojis = require('node-emoji');
 var nudger = require('./nudger');
+var trakttv = require('../SeriesAPI/Trakt.tv');
 var messageNudger = new nudger();
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
@@ -38,10 +39,17 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 */
 .matches('None', (session, args) => {
     session.send(emojis.get('coffee'), session.message.text);
-    messageNudger.setNewMessage(session)
+    messageNudger.setNewMessage(session);
 })
 .matches('Watch', (session, args) => {
-    session.send('Hi you motherfucker!!!', session.message.text);
+    session.send('I can suggest you few very popular movies:\n', session.message.text);
+    var callback = function (movies) {
+        for (var i = 0; i < movies.length / 2; i++) {
+            session.send(i.toString() + ': ' + movies[i].title, session.message.text);
+        }
+    };
+
+    trakttv.FindPopularMovies(callback);
 })
 .matches('Weather', (session, args) => {
 
@@ -92,7 +100,7 @@ if (useEmulator) {
     server.listen(3978, function() {
         console.log('test bot endpont at http://localhost:3978/api/messages');
     });
-    server.get('/api/messages', connector.listen());    
+    server.post('/api/messages', connector.listen());    
 } else {
     module.exports = { default: connector.listen() }
 }
