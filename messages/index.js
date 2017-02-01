@@ -28,7 +28,7 @@ const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' +
 
 var emojis = require('node-emoji');
 var nudger = require('./nudger');
-var messageNudger = new nudger(undefined);
+var messageNudger = new nudger();
 
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
