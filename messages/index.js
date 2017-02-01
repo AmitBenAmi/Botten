@@ -105,9 +105,8 @@ var forecast = new Forecast({
   }
 });
 
-// Retrieve weather information from coordinates (Sydney, Australia) 
-forecast.get([-33.8683, 151.2086], function(err, weather) {
-         session.send(weather.daily.data[0].summary, session.message.text);
+forecast.get([32.055614, 34.858787], function(err, weather) {
+         session.send("currently weather " + "at timezone" + weather.timezone +"is:" + weather.daily.data[0].summary , session.message.text);
 });
 } 
     catch(ex){session.send("Weather error", session.message.text);}
