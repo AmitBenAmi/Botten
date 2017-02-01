@@ -10,7 +10,7 @@ var trakt = new Trakt({
 });
 
 traktMessage.FindPopulars = function (Callback, populars) {
-    trakt[populars].popular({
+    trakt.movies.popular({
         pagination: false
     }).then(response => {
         Callback(response);
