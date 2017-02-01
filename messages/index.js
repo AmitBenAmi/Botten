@@ -81,8 +81,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     }
 })
 .matches('Weather', (session, args) => {
-
-    try{
+  try{
     // Require the module 
 var Forecast = require('forecast');
  
@@ -97,29 +96,22 @@ var forecast = new Forecast({
     seconds: 45
   }
 });
- 
+
 // Retrieve weather information from coordinates (Sydney, Australia) 
 forecast.get([-33.8683, 151.2086], function(err, weather) {
-  if(err) return console.dir(err);
-  console.dir(weather);
+         session.send(weather.daily.data[0].summary, session.message.text);
 });
- 
-// Retrieve weather information, ignoring the cache 
-forecast.get([-33.8683, 151.2086], true, function(err, weather) {
-  if(err) return console.dir(err);
-  console.dir(weather);
-});
-
-    session.send("Weather" + weather, session.message.text);
 } 
-    catch(ex){  session.send("Weather error" + ex, session.message.text);}
+    catch(ex){session.send("Weather error", session.message.text);}
+
 })
 .matches('shani', (session, args) => {
     session.send('is the best', session.message.text);
 })
 .onDefault((session) => {
-    session.send('Sorry, I did not understand \'%s\'.', session.message.text);
+      session.send('Sorry, I did not understand \'%s\'.', session.message.text);
     //session.send('Sorry, I did not understand \'%s\'.', session.message.text);
+
 });
 
 bot.dialog('/', intents);    
