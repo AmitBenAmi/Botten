@@ -48,8 +48,8 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     session.send('is the best', session.message.text);
 })
 .onDefault((session) => {
-    //session.send('Sorry, I did not understand \'%s\'.', session.message.text);
-});
+    //session.send('Sorry,  ba I did not understand \'%s\'.', session.message.text);
+}); 
 
 bot.dialog('/', intents);    
 
