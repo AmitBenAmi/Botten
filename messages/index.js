@@ -45,7 +45,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     messageNudger.setNewMessage(session);
 })
 .matches('Watch', (session, args) => {
-    session.send(args.entities[0], session.message.text);
+    session.send(args.Entities[0], session.message.text);
     session.send('amit', session.message.text);
     var moviesCallback = function (movies) {
 
