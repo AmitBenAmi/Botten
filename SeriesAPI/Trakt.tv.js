@@ -25,10 +25,10 @@ traktMessage.FindPopulars = function (Callback, populars) {
                          var imdbResponse = JSON.parse(body);
 
                          // Invoking the callback with the data from imdb
-                         Callback({
+                         Callback([{
                             title: response[0].title,
                             image: imdbResponse.data.image
-                         });
+                         }]);
                      });
         });
     });
