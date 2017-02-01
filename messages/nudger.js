@@ -22,7 +22,7 @@ class messageWatingForAnswer {
     }
 
     sendMessage() {
-        if (session != undefined) {
+        if (this.session != undefined) {
             this.session.send("נשאלה שאלה, מה עם תשובה?!", session.message.text);
              this.session = undefined;
              this.gotMessage = false;
