@@ -44,7 +44,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     session.send(emojis.get('coffee'), session.message.text);
     messageNudger.setNewMessage(session);
 })
-.matches('Watch', [(session, args, next) => {
+.matches('Watch', (session, args, next) => {
     //session.send(args.entities[0].entity, session.message.text);
     session.send('We are analyzing your message: \'%s\'', session.message.text);
     session.send('amit', session.message.text);
