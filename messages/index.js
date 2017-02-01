@@ -37,6 +37,11 @@ var messageNudger = new nudger();
 var Forecast = require('forecast');
 var fs = require('fs');
 var util = require('util');
+var path = require('path');
+
+function getRealImageLocation(imageName) {
+    return (path.resolve(__dirname + '../Images', imageName));
+};
 
 function sendInline(session, filePath, contentType, attachmentFileName) {
     fs.readFile(filePath, (err, data) => {
@@ -80,7 +85,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     }
 })
 .matches('Limay', (session, args) => {
-    sendInline(session, process.cwd() + './Images/Limay.jpg', 'image/jpg', 'Limay.jpg')
+    sendInline(session, getRealImageLocation('Limay.jpg'), 'image/jpg', 'Limay.jpg')
 })
 .matches('Watch', (session, args) => {
     messageNudger.cancelTimer(session);
