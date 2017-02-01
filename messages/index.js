@@ -114,7 +114,7 @@ forecast.get([32.055614, 34.858787], function(err, weather) {
 })
 .matches('surf', (session, args) => {
     messageNudger.cancelTimer(session);
-    session.send( session.message.user.name + 'you asked about surfing ! you should know surf is the best sport ever!', session.message.text);
+    session.send( session.message.adress.user.name + ' you asked about surfing ! you should know surf is the best sport ever!', session.message.text);
 })
 .matches('shani', (session, args) => {
     messageNudger.cancelTimer(session);
