@@ -5,8 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "botbuilder": "^3.4.2",
-    "botbuilder-azure": "0.0.1",
-    "dark-sky": "^1.0.10"
+    "botbuilder-azure": "0.0.1"
   },
   "devDependencies": {
     "restify": "^4.1.1"
