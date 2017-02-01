@@ -9,14 +9,20 @@ var trakt = new Trakt({
   api_url: null         // fallbacks to 'api-v2launch.trakt.tv' 
 });
 
-traktMessage.FindPopularMovies = function (Callback) {
+traktMessage.FindPopulars = function (Callback, populars) {
     trakt.movies.popular({
         pagination: false
     }).then(response => {
-        callback (response);
+        Callback(response);
     });
 };
 
-traktMessage.FindPopularMovies();
+traktMessage.FindPopularMovies = function (Callback) {
+    this.FindPopulars(Callback, 'movies');
+};
+
+traktMessage.FindPopularSeries = function (Callback) {
+    this.FindPopulars(Callback, 'shows');
+};
 
 module.exports = traktMessage;

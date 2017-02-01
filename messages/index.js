@@ -45,11 +45,15 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     messageNudger.setNewMessage(session);
 })
 .matches('Watch', (session, args) => {
-    session.send('I can suggest you few very popular movies:\n', session.message.text);
+    session.send('', session.message.text);
     var callback = function (movies) {
+
+        var messageBack = 'I can suggest you few very popular movies:\n';
         for (var i = 0; i < movies.length / 2; i++) {
-            session.send(i.toString() + ': ' + movies[i].title, session.message.text);
+            messageBack += (i + 1).toString() + ': ' + movies[i].title + '\n';
         }
+
+        session.send(messageBack, session.message.text);
     };
 
     trakttv.FindPopularMovies(callback);
@@ -63,7 +67,7 @@ var Forecast = require('forecast');
 // Initialize 
 var forecast = new Forecast({
   service: 'darksky',
-  key: 'your-api-key',
+  key: '6deb2af77d2dce8586af8ca9928faadf',
   units: 'celcius',
   cache: true,      // Cache API requests 
   ttl: {            // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/ 
@@ -107,4 +111,3 @@ if (useEmulator) {
 } else {
     module.exports = { default: connector.listen() }
 }
-
