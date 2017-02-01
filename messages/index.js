@@ -24,13 +24,13 @@ var luisAppId = process.env.LuisAppId;
 var luisAPIKey = process.env.LuisAPIKey;
 var luisAPIHostName = process.env.LuisAPIHostName || 'api.projectoxford.ai';
 
+
 const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
 
 var emojis = require('node-emoji');
 var nudger = require('./nudger');
 var trakttv = require('../SeriesAPI/Trakt.tv');
 var messageNudger = new nudger();
-
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] })
@@ -38,6 +38,10 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
 .matches('None', (session, args) => {
+    session.send(emojis.get('coffee'), session.message.text);
+    messageNudger.setNewMessage(session);
+})
+.matches('Watch', (session, args) => {
     session.send('I can suggest you few very popular movies:\n', session.message.text);
     var callback = function (movies) {
         for (var i = 0; i < movies.length / 2; i++) {
@@ -47,11 +51,35 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 
     trakttv.FindPopularMovies(callback);
 })
-.matches('Watch', (session, args) => {
-    session.send('Hi you motherfucker!!!', session.message.text);
-})
 .matches('Weather', (session, args) => {
-    session.send('מתי יעלו את המשכורת של הקצינים?', session.message.text);
+    // Require the module 
+var Forecast = require('forecast');
+ 
+// Initialize 
+var forecast = new Forecast({
+  service: 'darksky',
+  key: 'your-api-key',
+  units: 'celcius',
+  cache: true,      // Cache API requests 
+  ttl: {            // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/ 
+    minutes: 27,
+    seconds: 45
+  }
+});
+ 
+// Retrieve weather information from coordinates (Sydney, Australia) 
+forecast.get([-33.8683, 151.2086], function(err, weather) {
+  if(err) return console.dir(err);
+  console.dir(weather);
+});
+ 
+// Retrieve weather information, ignoring the cache 
+forecast.get([-33.8683, 151.2086], true, function(err, weather) {
+  if(err) return console.dir(err);
+  console.dir(weather);
+});
+
+    session.send("Weather" + weather, session.message.text);
 })
 .matches('shani', (session, args) => {
     session.send('is the best', session.message.text);
@@ -68,7 +96,7 @@ if (useEmulator) {
     server.listen(3978, function() {
         console.log('test bot endpont at http://localhost:3978/api/messages');
     });
-    server.post('/api/messages', connector.listen());    
+    server.get('/api/messages', connector.listen());    
 } else {
     module.exports = { default: connector.listen() }
 }
