@@ -80,7 +80,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     }
 })
 .matches('Limay', (session, args) => {
-    sendInline(session, './Images/Limay.jpg', 'image/jpg', 'Limay.jpg')
+    sendInline(session, '../Images/Limay.jpg', 'image/jpg', 'Limay.jpg')
 })
 .matches('Watch', (session, args) => {
     messageNudger.cancelTimer(session);
