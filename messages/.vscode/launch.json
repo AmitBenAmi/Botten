@@ -9,9 +9,7 @@
             "program": "${workspaceRoot}/index.js",
             "cwd": "${workspaceRoot}",
             "env": {
-                "NODE_ENV": "development",
-                "LuisAppId": "",
-                "LuisAPIKey": ""
+                "NODE_ENV": "development"
             }
         }
     ]

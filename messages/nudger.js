@@ -10,7 +10,7 @@ class messageWatingForAnswer {
         if (!this.gotMessage) {
             this.gotMessage = true;
             this.session = session;
-            this.timeout = timers.setTimeout(this.sendMessage,timeInSeconds * 1000);
+            this.timeout = timers.setTimeout(this.sendMessage,timeInSeconds);
         }
         else {
             timers.clearTimeout(this.timeout);
