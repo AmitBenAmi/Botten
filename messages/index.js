@@ -34,6 +34,9 @@ var emojis = require('node-emoji');
 var nudger = require('./nudger');
 var trakttv = require('../SeriesAPI/Trakt.tv');
 var messageNudger = new nudger();
+var Forecast = require('forecast');
+
+
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] })
@@ -42,7 +45,6 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 */
 .matches('None', (session, args) => {
     session.send(emojis.get('coffee'), session.message.text);
-<<<<<<< HEAD
     if (session.message.text.includes("?")) {
          messageNudger.setNewMessage(session,true);
     } else {
@@ -50,14 +52,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     }
 })
 .matches('Watch', (session, args) => {
-    session.send(args.Entities[0], session.message.text);
-    session.send('amit', session.message.text);
     messageNudger.cancelTimer(session);
-=======
-    messageNudger.setNewMessage(session);
-})
-.matches('Watch', (session, args, next) => {
->>>>>>> 2957e469560d54166b4e54a12e6a4e42ec614993
     var moviesCallback = function (movies) {
 
         var messageBack = 'I can suggest you few very popular movies:\n\n';
@@ -94,14 +89,9 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     }
 })
 .matches('Weather', (session, args) => {
-<<<<<<< HEAD
     messageNudger.cancelTimer(session);
     try{
-=======
-  try{
->>>>>>> 2957e469560d54166b4e54a12e6a4e42ec614993
-    // Require the module 
-var Forecast = require('forecast');
+
  
 // Initialize 
 var forecast = new Forecast({
