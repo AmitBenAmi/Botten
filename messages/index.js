@@ -106,11 +106,15 @@ var forecast = new Forecast({
 });
 
 forecast.get([32.055614, 34.858787], function(err, weather) {
-         session.send("currently weather " + "at timezone" + weather.timezone +"is:" + weather.daily.data[0].summary , session.message.text);
+         session.send("currently weather " + "at timezone " + weather.timezone +" is:" + weather.daily.data[0].summary , session.message.text);
 });
 } 
     catch(ex){session.send("Weather error", session.message.text);}
 
+})
+.matches('surf', (session, args) => {
+    messageNudger.cancelTimer(session);
+    session.send('surf is the best sport ever!', session.message.text);
 })
 .matches('shani', (session, args) => {
     messageNudger.cancelTimer(session);
