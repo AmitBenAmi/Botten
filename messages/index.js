@@ -96,6 +96,8 @@ forecast.get([-33.8683, 151.2086], true, function(err, weather) {
 })
 .onDefault((session) => {
     //session.send('Sorry, I did not understand \'%s\'.', session.message.text);
+    session.send("bla bla");
+     messageNudger.setNewMessage(session);
 });
 
 bot.dialog('/', intents);    

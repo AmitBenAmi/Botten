@@ -10,6 +10,7 @@ class messageWatingForAnswer {
         if (!this.gotMessage) {
             this.gotMessage = true;
             this.session = session;
+            this.session.send("from nudger");
             this.timeout = timers.setTimeout(this.sendMessage,timeInSeconds);
         }
         else {
@@ -19,9 +20,9 @@ class messageWatingForAnswer {
         }
     }
 
-    sendMessage() {
+    sendMessage(session) {
         if (this.session != undefined) {
-            this.session.send("נשאלה שאלה, מה עם תשובה?!", session.message.text);
+            this.session.send("נשאלה שאלה, מה עם תשובה?!");
              this.session = undefined;
              this.gotMessage = false;
         }
