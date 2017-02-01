@@ -46,7 +46,27 @@ var nudger = require('./nudger');
 var trakttv = require('../SeriesAPI/Trakt.tv');
 var messageNudger = new nudger();
 var Forecast = require('forecast');
+var fs = require('fs');
+var util = require('util');
 
+function sendInline(session, filePath, contentType, attachmentFileName) {
+    fs.readFile(filePath, (err, data) => {
+        if (err) {
+            return session.send('Oops. Error reading file. Error: ' + err.message);
+        }
+
+        var base64 = Buffer.from(data).toString('base64');
+
+        var msg = new builder.Message(session)
+            .addAttachment({
+                contentUrl: util.format('data:%s;base64,%s', contentType, base64),
+                contentType: contentType,
+                name: attachmentFileName
+            });
+
+        session.send(msg);
+    });
+};
 
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
@@ -55,20 +75,32 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
 .matches('None', (session, args) => {
-    session.send(emojis.get('coffee'), session.message.text);
+    session.send(emojis.get('question'), session.message.text);
     if (session.message.text.includes("?")) {
          messageNudger.setNewMessage(session,true);
     } else {
         messageNudger.cancelTimer(session);
     }
+
+    for (var i = 0; i < args.entities.length; i++) {
+        session.send('args\n\n' + (i + 1).toString() + ') ' + args.entities[i].entity + ', ' + args.entities[i].type + '\n\n', session.message.text);
+    }
+
+    for (var i = 0; i < session.message.entities.length; i++) {
+        session.send('message\n\n' + (i + 1).toString() + ') ' + session.message.entities[i].entity + ', ' + session.message.entities[i].type + '\n\n', session.message.text);
+    }
+})
+.matches('Limay', (session, args) => {
+    sendInline(session, process.cwd() + './Images/Limay.jpg', 'image/jpg', 'Limay.jpg')
 })
 .matches('Watch', (session, args) => {
     messageNudger.cancelTimer(session);
     var moviesCallback = function (movies) {
 
-        var messageBack = 'I can suggest you few very popular movies:\n\n';
-        for (var i = 0; i < movies.length / 2; i++) {
-            messageBack += (i + 1).toString() + ': ' + movies[i].title + '\n\n';
+        var messageBack = 'When you have some free time you should go see \'';
+        for (var i = 0; i < movies.length; i++) {
+            messageBack += movies[i].title + '\'. It\'s a real great movie..\n\n';
+            messageBack += movies[i].image;
         }
 
         session.send(messageBack, session.message.text);
@@ -76,9 +108,10 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 
     var showsCallback = function (shows) {
 
-        var messageBack = 'I can suggest you few very popular shows:\n\n';
-        for (var i = 0; i < shows.length / 2; i++) {
-            messageBack += (i + 1).toString() + ': ' + shows[i].title + '\n\n';
+        var messageBack = 'I\'ve heard about a real good show called \'';
+        for (var i = 0; i < shows.length; i++) {
+            messageBack += shows[i].title + '\'.\n\n';
+            messageBack += shows[i].image;
         }
 
         session.send(messageBack, session.message.text);
