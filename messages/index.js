@@ -36,7 +36,10 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     session.send('Hi! This is the None intent handler. You said: \'%s\'.', session.message.text);
 })
 .matches('Watch', (session, args) => {
-    session.send('Hi you motherfucker!!!', session.message.test);
+    session.send('Hi you motherfucker!!!', session.message.text);
+})
+.matches('Weather', (session, args) => {
+    session.send('מתי יעלו את המשכורת של הקצינים?', session.message.text);
 })
 .onDefault((session) => {
     //session.send('Sorry, I did not understand \'%s\'.', session.message.text);
