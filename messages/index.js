@@ -26,6 +26,8 @@ var luisAPIHostName = process.env.LuisAPIHostName || 'api.projectoxford.ai';
 
 const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
 
+var emojis = require('node-emoji');
+
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] })
@@ -33,7 +35,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
 .matches('None', (session, args) => {
-    session.send('💙', session.message.text);
+    session.send(emojis.get('heart'), session.message.text);
 })
 .matches('Watch', (session, args) => {
     session.send('Hi you motherfucker!!!', session.message.text);
