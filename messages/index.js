@@ -45,7 +45,8 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     messageNudger.setNewMessage(session);
 })
 .matches('Watch', (session, args) => {
-    session.send(args.entties[0], session.message.text);
+    session.send(args.entities[0], session.message.text);
+    session.send('amit', session.message.text);
     var moviesCallback = function (movies) {
 
         var messageBack = 'I can suggest you few very popular movies:\n';
@@ -118,8 +119,6 @@ forecast.get([-33.8683, 151.2086], true, function(err, weather) {
 })
 .onDefault((session) => {
     //session.send('Sorry, I did not understand \'%s\'.', session.message.text);
-    session.send("bla bla");
-     messageNudger.setNewMessage(session);
 });
 
 bot.dialog('/', intents);    
