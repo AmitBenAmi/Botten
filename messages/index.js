@@ -42,12 +42,10 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 */
 .matches('None', (session, args) => {
     session.send(emojis.get('coffee'), session.message.text);
-    if (session.message.text.includes("?")) {
-         messageNudger.setNewMessage(session);
-    }
+    messageNudger.setNewMessage(session);
 })
-.matches('Watch', (session, args, next) => {
-    session.send(args.entities[0], session.message.text);
+.matches('Watch', [(session, args, next) => {
+    session.send(args.entities[0].entity, session.message.text);
     session.send('amit', session.message.text);
     var moviesCallback = function (movies) {
 
