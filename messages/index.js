@@ -89,6 +89,12 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     } else {
         messageNudger.cancelTimer(session);
     }
+})
+.matches('Limay', (session, args) => {
+    sendInline(session, getRealImageLocation('Limay.jpg'), 'image/jpg', 'Limay.jpg')
+})
+.matches('Watch', (session, args) => {
+    messageNudger.cancelTimer(session);
 
     for (var i = 0; i < args.entities.length; i++) {
         session.send('args\n\n' + (i + 1).toString() + ') ' + args.entities[i].entity + ', ' + args.entities[i].type + '\n\n', session.message.text);
@@ -97,12 +103,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     for (var i = 0; i < session.message.entities.length; i++) {
         session.send('message\n\n' + (i + 1).toString() + ') ' + session.message.entities[i].entity + ', ' + session.message.entities[i].type + '\n\n', session.message.text);
     }
-})
-.matches('Limay', (session, args) => {
-    sendInline(session, getRealImageLocation('Limay.jpg'), 'image/jpg', 'Limay.jpg')
-})
-.matches('Watch', (session, args) => {
-    messageNudger.cancelTimer(session);
+
     var moviesCallback = function (movies) {
 
         var messageBack = 'When you have some free time you should go see \'';
