@@ -116,6 +116,7 @@ forecast.get([-33.8683, 151.2086], true, function(err, weather) {
     session.send('is the best', session.message.text);
 })
 .onDefault((session) => {
+    session.send('Sorry, I did not understand \'%s\'.', session.message.text);
     //session.send('Sorry, I did not understand \'%s\'.', session.message.text);
 });
 
