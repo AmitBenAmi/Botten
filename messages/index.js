@@ -45,13 +45,12 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     messageNudger.setNewMessage(session);
 })
 .matches('Watch', (session, args, next) => {
-    session.send(args.entities[0].entity, session.message.text);
     session.send('amit', session.message.text);
     var moviesCallback = function (movies) {
 
-        var messageBack = 'I can suggest you few very popular movies:\n';
+        var messageBack = 'I can suggest you few very popular movies:\n\n';
         for (var i = 0; i < movies.length / 2; i++) {
-            messageBack += (i + 1).toString() + ': ' + movies[i].title + '\n';
+            messageBack += (i + 1).toString() + ': ' + movies[i].title + '\n\n';
         }
 
         session.send(messageBack, session.message.text);
@@ -59,9 +58,9 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 
     var showsCallback = function (shows) {
 
-        var messageBack = 'I can suggest you few very popular shows:\n';
+        var messageBack = 'I can suggest you few very popular shows:\n\n';
         for (var i = 0; i < shows.length / 2; i++) {
-            messageBack += (i + 1).toString() + ': ' + shows[i].title + '\n';
+            messageBack += (i + 1).toString() + ': ' + shows[i].title + '\n\n';
         }
 
         session.send(messageBack, session.message.text);
