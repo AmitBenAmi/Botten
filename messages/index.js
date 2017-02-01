@@ -45,11 +45,12 @@ function getRealImageLocation(imageName) {
 
 function sendInline(session, filePath, contentType, attachmentFileName) {
     fs.readFile(filePath, (err, data) => {
+        session.send('start', session.message.text);
         if (err) {
-            return session.send('Oops. Error reading file. Error: ' + err.message);
+            return session.send('Oops. Error reading file. Error: ' + err.message, session.message.text);
         }
 
-        session.send('Sending message');
+        session.send('Sending message', session.message.text);
 
         var base64 = Buffer.from(data).toString('base64');
 
