@@ -6,8 +6,8 @@ class messageWatingForAnswer {
     constructor() {
     }
 
-    setNewMessage(session) {
-        if (!this.gotMessage) {
+    setNewMessage(session, isQuestion) {
+        if (!this.gotMessage || (this.gotMessage && isQuestion)) {
             this.gotMessage = true;
             this.session = session;
             this.timeout = timers.setTimeout(this.sendMessage(this),timeInSeconds*1000);
@@ -16,6 +16,12 @@ class messageWatingForAnswer {
             timers.clearTimeout(this.timeout);
             this.session = undefined;
             this.gotMessage = false;
+        }
+    }
+
+    cancelTimer() {
+        if (this.timeout != undefined) {
+            timers.clearTimeout(this.timeout);
         }
     }
 

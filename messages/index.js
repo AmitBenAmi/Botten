@@ -43,12 +43,15 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('None', (session, args) => {
     session.send(emojis.get('coffee'), session.message.text);
     if (session.message.text.includes("?")) {
-         messageNudger.setNewMessage(session);
+         messageNudger.setNewMessage(session,true);
+    } else {
+        messageNudger.cancelTimer(session);
     }
 })
 .matches('Watch', (session, args) => {
     session.send(args.Entities[0], session.message.text);
     session.send('amit', session.message.text);
+    messageNudger.cancelTimer(session);
     var moviesCallback = function (movies) {
 
         var messageBack = 'I can suggest you few very popular movies:\n';
@@ -83,7 +86,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     }
 })
 .matches('Weather', (session, args) => {
-
+    messageNudger.cancelTimer(session);
     try{
     // Require the module 
 var Forecast = require('forecast');
@@ -117,10 +120,16 @@ forecast.get([-33.8683, 151.2086], true, function(err, weather) {
     catch(ex){  session.send("Weather error" + ex, session.message.text);}
 })
 .matches('shani', (session, args) => {
+    messageNudger.cancelTimer(session);
     session.send('is the best', session.message.text);
 })
 .onDefault((session) => {
     //session.send('Sorry, I did not understand \'%s\'.', session.message.text);
+    // if (session.message.text.includes("?")) {
+    //      messageNudger.setNewMessage(session, true);
+    // } else {
+    //     messageNudger.cancelTimer(session);
+    // }
 });
 
 bot.dialog('/', intents);    
