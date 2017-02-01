@@ -66,12 +66,14 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
         session.send(messageBack, session.message.text);
     };
 
+    // Checking for Movies entities
     var entity = builder.EntityRecognizer.findEntity(args.entities, 'Movies');
 
     if (entity) {
         trakttv.FindPopularMovies(moviesCallback);
     }
     else {
+        // Checking for Shows entities
         entity = builder.EntityRecognizer.findEntity(args.entities, 'Shows');
 
         if (entity) {
