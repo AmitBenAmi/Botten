@@ -35,7 +35,27 @@ var nudger = require('./nudger');
 var trakttv = require('../SeriesAPI/Trakt.tv');
 var messageNudger = new nudger();
 var Forecast = require('forecast');
+var fs = require('fs');
+var util = require('util');
 
+function sendInline(session, filePath, contentType, attachmentFileName) {
+    fs.readFile(filePath, (err, data) => {
+        if (err) {
+            return session.send('Oops. Error reading file.');
+        }
+
+        var base64 = Buffer.from(data).toString('base64');
+
+        var msg = new builder.Message(session)
+            .addAttachment({
+                contentUrl: util.format('data:%s;base64,%s', contentType, base64),
+                contentType: contentType,
+                name: attachmentFileName
+            });
+
+        session.send(msg);
+    });
+};
 
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
@@ -44,7 +64,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
 .matches('None', (session, args) => {
-    session.send(emojis.get('question-mark'), session.message.text);
+    session.send(emojis.get('question'), session.message.text);
     if (session.message.text.includes("?")) {
          messageNudger.setNewMessage(session,true);
     } else {
@@ -58,6 +78,9 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     for (var i = 0; i < session.message.entities.length; i++) {
         session.send('message\n\n' + (i + 1).toString() + ') ' + session.message.entities[i].entity + ', ' + session.message.entities[i].type + '\n\n', session.message.text);
     }
+})
+.matches('Limay', (session, args) => {
+    sendInline(session, './Images/Limay.jpg', 'image/jpg', 'Limay.jpg')
 })
 .matches('Watch', (session, args) => {
     messageNudger.cancelTimer(session);
