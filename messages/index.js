@@ -28,6 +28,7 @@ const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' +
 
 var emojis = require('node-emoji');
 var nudger = require('./nudger');
+var trakttv = require('../SeriesAPI/Trakt.tv');
 var messageNudger = new nudger();
 
 // Main dialog with LUIS
@@ -37,7 +38,14 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
 .matches('None', (session, args) => {
-    session.send(emojis.get('coffee'), session.message.text);
+    session.send('I can suggest you few very popular movies:\n', session.message.text);
+    var callback = function (movies) {
+        for (var i = 0; i < movies.length / 2; i++) {
+            session.send(i.toString() + ': ' + movies[i].title, session.message.text);
+        }
+    };
+
+    trakttv.FindPopularMovies(callback);
 })
 .matches('Watch', (session, args) => {
     session.send('Hi you motherfucker!!!', session.message.text);

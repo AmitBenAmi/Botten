@@ -1,18 +1,6 @@
-var http = require('http');
-
-var options = {
-    host: 'api.trakt.tv',
-    path: '/movies',
-    method: 'GET',
-    port: 443,
-    headers: {
-        'Content-Type': 'application/json',
-        'trakt-api-key': 'c4ea0f22aee36a9f7a099cc8c2ec078e479a97df19c02b403ce3f3db94a21b38',
-        'trakt-api-version': 2
-    }
-};
-
 var Trakt = require('trakt.tv');
+
+var traktMessage = {};
 
 var trakt = new Trakt({
   client_id: 'c4ea0f22aee36a9f7a099cc8c2ec078e479a97df19c02b403ce3f3db94a21b38',
@@ -21,9 +9,14 @@ var trakt = new Trakt({
   api_url: null         // fallbacks to 'api-v2launch.trakt.tv' 
 });
 
-trakt.search.text({
-    query: 'tron',
-    type: 'movie, person'
-}).then(response => {
-    
-});
+traktMessage.FindPopularMovies = function (Callback) {
+    trakt.movies.popular({
+        pagination: false
+    }).then(response => {
+        callback (response);
+    });
+};
+
+traktMessage.FindPopularMovies();
+
+module.exports = traktMessage;
