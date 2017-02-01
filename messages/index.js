@@ -24,12 +24,12 @@ var luisAppId = process.env.LuisAppId;
 var luisAPIKey = process.env.LuisAPIKey;
 var luisAPIHostName = process.env.LuisAPIHostName || 'api.projectoxford.ai';
 
+
 const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
 
 var emojis = require('node-emoji');
 var nudger = require('./nudger');
 var messageNudger = new nudger();
-
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] })
@@ -43,7 +43,34 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     session.send('Hi you motherfucker!!!', session.message.text);
 })
 .matches('Weather', (session, args) => {
-    session.send('מתי יעלו את המשכורת של הקצינים?', session.message.text);
+    // Require the module 
+var Forecast = require('forecast');
+ 
+// Initialize 
+var forecast = new Forecast({
+  service: 'darksky',
+  key: 'your-api-key',
+  units: 'celcius',
+  cache: true,      // Cache API requests 
+  ttl: {            // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/ 
+    minutes: 27,
+    seconds: 45
+  }
+});
+ 
+// Retrieve weather information from coordinates (Sydney, Australia) 
+forecast.get([-33.8683, 151.2086], function(err, weather) {
+  if(err) return console.dir(err);
+  console.dir(weather);
+});
+ 
+// Retrieve weather information, ignoring the cache 
+forecast.get([-33.8683, 151.2086], true, function(err, weather) {
+  if(err) return console.dir(err);
+  console.dir(weather);
+});
+
+    session.send("Weather" + weather, session.message.text);
 })
 .matches('shani', (session, args) => {
     session.send('is the best', session.message.text);
