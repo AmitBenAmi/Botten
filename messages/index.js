@@ -42,7 +42,9 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 */
 .matches('None', (session, args) => {
     session.send(emojis.get('coffee'), session.message.text);
-    messageNudger.setNewMessage(session);
+    if (session.message.text.includes("?")) {
+         messageNudger.setNewMessage(session);
+    }
 })
 .matches('Watch', (session, args, next) => {
     session.send(args.entities[0], session.message.text);
