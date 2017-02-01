@@ -42,11 +42,15 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     messageNudger.setNewMessage(session);
 })
 .matches('Watch', (session, args) => {
-    session.send('I can suggest you few very popular movies:\n', session.message.text);
+    session.send('', session.message.text);
     var callback = function (movies) {
+
+        var messageBack = 'I can suggest you few very popular movies:\n';
         for (var i = 0; i < movies.length / 2; i++) {
-            session.send(i.toString() + ': ' + movies[i].title, session.message.text);
+            messageBack += i.toString() + ': ' + movies[i].title;
         }
+
+        session.send(messageBack, session.message.text);
     };
 
     trakttv.FindPopularMovies(callback);
