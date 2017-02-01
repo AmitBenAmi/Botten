@@ -45,9 +45,9 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     session.send('', session.message.text);
     var callback = function (movies) {
 
-        var messageBack = 'I can suggest you few very popular movies:%0A';
+        var messageBack = 'I can suggest you few very popular movies:\n';
         for (var i = 0; i < movies.length / 2; i++) {
-            messageBack += (i + 1).toString() + ': ' + movies[i].title + '%0A';
+            messageBack += (i + 1).toString() + ': ' + movies[i].title + '\n';
         }
 
         session.send(messageBack, session.message.text);
