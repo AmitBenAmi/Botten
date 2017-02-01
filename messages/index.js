@@ -45,10 +45,36 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     session.send('Hi you motherfucker!!!', session.message.text);
 })
 .matches('Weather', (session, args) => {
+    // Require the module 
+var Forecast = require('forecast');
+ 
+// Initialize 
+var forecast = new Forecast({
+  service: 'darksky',
+  key: '6deb2af77d2dce8586af8ca9928faadf',
+  units: 'celcius',
+  cache: true,      // Cache API requests 
+  ttl: {            // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/ 
+    minutes: 27,
+    seconds: 45
+  }
+});
+ 
+// Retrieve weather information from coordinates (Sydney, Australia) 
+forecast.get([-33.8683, 151.2086], function(err, weather) {
+  if(err) return console.dir(err);
+  console.dir(weather);
+});
+ 
+// Retrieve weather information, ignoring the cache 
+forecast.get([-33.8683, 151.2086], true, function(err, weather) {
+  if(err) return console.dir(err);
+  console.dir(weather);
+});
     session.send('מתי יעלו את המשכורת של הקצינים?', session.message.text);
 })
 .matches('shani', (session, args) => {
-    session.send('is the best', session.message.text);
+    session.send(weather, session.message.text);
 })
 
 .matches('NoAnswer', (session, args) => {
