@@ -45,7 +45,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     messageNudger.setNewMessage(session);
 })
 .matches('Watch', (session, args) => {
-    var callback = function (movies) {
+    var moviesCallback = function (movies) {
 
         var messageBack = 'I can suggest you few very popular movies:\n';
         for (var i = 0; i < movies.length / 2; i++) {
@@ -55,7 +55,28 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
         session.send(messageBack, session.message.text);
     };
 
-    trakttv.FindPopularMovies(callback);
+    var showsCallback = function (shows) {
+
+        var messageBack = 'I can suggest you few very popular shows:\n';
+        for (var i = 0; i < shows.length / 2; i++) {
+            messageBack += (i + 1).toString() + ': ' + shows[i].title + '\n';
+        }
+
+        session.send(messageBack, session.message.text);
+    };
+
+    var entity = builder.EntityRecognizer.findEntity(args.entities, 'Movies');
+
+    if (entity) {
+        trakttv.FindPopularMovies(moviesCallback);
+    }
+    else {
+        entity = builder.EntityRecognizer.findEntity(args.entities, 'Shows');
+
+        if (entity) {
+            trakttv.FindPopularShows(moviesCallback);
+        }
+    }
 })
 .matches('Weather', (session, args) => {
 

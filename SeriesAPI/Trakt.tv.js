@@ -21,7 +21,7 @@ traktMessage.FindPopularMovies = function (Callback) {
     this.FindPopulars(Callback, 'movies');
 };
 
-traktMessage.FindPopularSeries = function (Callback) {
+traktMessage.FindPopularShows = function (Callback) {
     this.FindPopulars(Callback, 'shows');
 };
 
