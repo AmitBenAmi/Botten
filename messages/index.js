@@ -35,6 +35,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
 .matches('None', (session, args) => {
+    session.send((args), session.message.test);
     session.send(emojis.get('coffee'), session.message.text);
 })
 .matches('Watch', (session, args) => {
