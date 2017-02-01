@@ -1,6 +1,6 @@
 var timers = require('timers');
 
-var timeInSeconds = 2;
+var timeInSeconds = 10;
 
 class messageWatingForAnswer {
     constructor() {
@@ -10,8 +10,7 @@ class messageWatingForAnswer {
         if (!this.gotMessage) {
             this.gotMessage = true;
             this.session = session;
-            this.session.send("from nudger");
-            this.timeout = timers.setTimeout(this.sendMessage(this),timeInSeconds);
+            this.timeout = timers.setTimeout(this.sendMessage(this),timeInSeconds*1000);
         }
         else {
             timers.clearTimeout(this.timeout);
