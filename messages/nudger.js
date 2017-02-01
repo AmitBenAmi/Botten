@@ -22,9 +22,11 @@ class messageWatingForAnswer {
     }
 
     sendMessage() {
-        this.session.send("נשאלה שאלה, מה עם תשובה?!", session.message.text);
-        this.session = undefined;
-        this.gotMessage = false;
+        if (session != undefined) {
+            this.session.send("נשאלה שאלה, מה עם תשובה?!", session.message.text);
+             this.session = undefined;
+             this.gotMessage = false;
+        }
     }
 
 }
