@@ -161,7 +161,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
             // Reading in bytes
             var http = require('http');
             session.send('https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMcpIopma-Ae8uJxrjUPOKgObGCnkUt9sE8J7LRZk78EbpnsMN4Q'.contentUrl, session.message.text);
-            http.get(session.message.attachments[0].contentUrl, (res) => {
+            http.get('https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMcpIopma-Ae8uJxrjUPOKgObGCnkUt9sE8J7LRZk78EbpnsMN4Q', (res) => {
                 var imageData = [];
 
                 res.on('data', function (chunk) {
