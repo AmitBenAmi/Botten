@@ -89,14 +89,6 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('Watch', (session, args) => {
     messageNudger.cancelTimer(session);
 
-    for (var i = 0; i < args.entities.length; i++) {
-        session.send('args\n\n' + (i + 1).toString() + ') ' + args.entities[i].entity + ', ' + args.entities[i].type + '\n\n', session.message.text);
-    }
-
-    for (var i = 0; i < session.message.entities.length; i++) {
-        session.send('message\n\n' + (i + 1).toString() + ') ' + session.message.entities[i].entity + ', ' + session.message.entities[i].type + '\n\n', session.message.text);
-    }
-
     var moviesCallback = function (movies) {
 
         var messageBack = 'When you have some free time you should go see \'';
@@ -123,14 +115,16 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     var entity = builder.EntityRecognizer.findEntity(args.entities, 'Movies');
 
     if (entity) {
-        trakttv.FindPopularMovies(moviesCallback);
+        //trakttv.FindPopularMovies(moviesCallback);
+        trakttv.searchForItem(entity.entity, moviesCallback);
     }
     else {
         // Checking for Shows entities
         entity = builder.EntityRecognizer.findEntity(args.entities, 'Shows');
 
         if (entity) {
-            trakttv.FindPopularShows(showsCallback);
+            //trakttv.FindPopularShows(showsCallback);
+            trakttv.searchForItem(entity.entity, showsCallback);
         }
     }
 })
