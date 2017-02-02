@@ -45,9 +45,9 @@ traktMessage.FindPopularShows = function (Callback) {
 traktMessage.searchForItem = function (text, Callback) {
     trakt.search.text({
         query: `${ text }`,
-        type: 'movie,show,person'
+        type: 'movie,show'
     }).then(queryResponse => {
-        http.get(`http://imdb.wemakesites.net/api/${ queryResponse[0].ids.imdb }?api_key=fa97b5b3-f918-4c2d-af92-9c4d3d6244af`,
+        http.get(`http://imdb.wemakesites.net/api/${ (queryResponse[0].movie || queryResponse[0].show).ids.imdb }?api_key=fa97b5b3-f918-4c2d-af92-9c4d3d6244af`,
                  res => {
                      var body = '';
                      res.on('data', chunk => {
