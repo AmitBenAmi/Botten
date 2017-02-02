@@ -175,7 +175,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
                         function (emotionsRes) {
                             var emotions = JSON.parse(emotionsRes);
                             var emotionMessage = '';
-                            //session.send(emotions.lengt + ' length', sesstion.message.text);
+                            
                             for (var i = 0; i < emotions.length; i++) {
                                 var maxEmotion = -Infinity;
                                 var emotionDescription;
