@@ -161,22 +161,18 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
             // Reading in bytes
             var https = require('https');
             https.get(session.message.attachments[0].contentUrl, (res) => {
-               session.send('c', session.message.text);
                 var imageData = [];
-session.send('d', session.message.text);
+
                 res.on('data', function (chunk) {
                     imageData.push(chunk);
-                    session.send('2', session.message.text);
                 });
-                session.send('1', session.message.text);
+                
                 res.on('end', function () {
-                    session.send('3', session.message.text);
                     var binary = Buffer.concat(imageData);
                     oxfordEmotion.recognize(
                         "image",
                         imageData,
                         function (emotionsRes) {
-                            session.send('4', session.message.text);
                             var emotions = JSON.parse(emotionsRes);
                             var emotionMessage = '';
 
