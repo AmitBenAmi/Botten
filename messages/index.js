@@ -116,6 +116,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 
     if (entity) {
         //trakttv.FindPopularMovies(moviesCallback);
+        session.send('my entity' + entity.entity, session.message.text);
         trakttv.searchForItem(entity.entity, moviesCallback);
     }
     else {
