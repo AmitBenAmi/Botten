@@ -46,6 +46,7 @@ var nudger = require('./nudger');
 var trakttv = require('../SeriesAPI/Trakt.tv');
 var messageNudger = new nudger();
 var Forecast = require('forecast');
+var fs = require('fs');
 
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
@@ -148,58 +149,54 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     })
     .onDefault((session) => {
         // rotem
-            if (hasImageAttachment(session)) {
-                var stream = getImageStreamFromUrl(session.message.attachments[0]);
-                captionService
-                    .getCaptionFromStream(stream)
-                    .then(caption => handleSuccessResponse(session, caption))
-                    .catch(error => handleErrorResponse(session, error));
+        if (hasImageAttachment(session)) {
+            var stream = getImageStreamFromUrl(session.message.attachments[0]);
+            captionService
+                .getCaptionFromStream(stream)
+                .then(caption => handleSuccessResponse(session, caption))
+                .catch(error => handleErrorResponse(session, error));
 
-                var oxfordEmotion = require("node-oxford-emotion")("fbe5dde1aecc4b52aab90285d2dcb2c2");
-                var emotions = [];
-                oxfordEmotion.recognize(
-                    "url", 
-                    "http://www.canadianpharmacymeds.com/blog/wp-content/uploads/2014/06/bipolar-disorder-woman-with-different-emotions.jpg", 
-                    function (emotions) {
-                        var emotionMessage = '';
+            var oxfordEmotion = require("node-oxford-emotion")("fbe5dde1aecc4b52aab90285d2dcb2c2");
 
-                        for (var i = 0; i < emotions.length; i++) {
-                            var maxEmotion = -Infinity;
-                            var emotionDescription;
-                            for (var emotion in emotions[i].scores) {
-                                if (emotions[i].scores[emotion] > maxEmotion) {
-                                    maxEmotion = emotions[i].scores[emotion];
-                                    emotionDescription = emotion;
+            // Reading in bytes
+            var http = require('http');
+            http.get(session.message.attachments[0].contentUrl, (res) => {
+                var imageData = [];
+
+                res.on('data', function (chunk) {
+                    imageData.push(chunk);
+                });
+
+                res.on('end', function () {
+                    var binary = Buffer.concat(imageData);
+                    oxfordEmotion.recognize(
+                        "image",
+                        imageData,
+                        function (emotionsRes) {
+                            var emotions = JSON.parse(emotionsRes);
+                            var emotionMessage = '';
+
+                            for (var i = 0; i < emotions.length; i++) {
+                                var maxEmotion = -Infinity;
+                                var emotionDescription;
+                                for (var emotion in emotions[i].scores) {
+                                    if (emotions[i].scores[emotion] > maxEmotion) {
+                                        maxEmotion = emotions[i].scores[emotion];
+                                        emotionDescription = emotion;
+                                    }
                                 }
+
+                                emotionMessage += `The ${i + 1} person is feeling ${emotionDescription}\n\n`;
                             }
-                            
-                            emotionMessage += `The ${ i + 1 } person is feeling ${ emotionDescription }\n\n`;
-                        }
 
-                        session.send(emotionMessage, session.message.text);  
-                    });
-
-
-                /*   var req = Request(
-                   {
-                       url: 'https://westus.api.cognitive.microsoft.com/emotion/v1.0',//url de la api 
-                       method: 'POST',
-                       headers: {
-                           'Content-Type': 'application/octet-stream',//formato de envío de la imagen al api
-                           'Ocp-Apim-Subscription-Key': 'fbe5dde1aecc4b52aab90285d2dcb2c2',//suscription API KEY
-                       }
-                   }, function (error, response, body) {
-                       if (error) {
-                           reply(error); //en caso de que se algo salga mal, retornamos al cliente dicho error 
-                       } else {
-                           // si todo sale bien, devolvemos al cliente la respuesta del API
-                           reply({ 'uri' : Util.format('/public/upload/%s', fileName), 'info': body }).code(200);
-                       }
-                   });*/
-            }
-            else {
-                session.send('Sorry, I did not understand \'%s\'.', session.message.text);
-            }
+                            session.send(emotionMessage, session.message.text);
+                        });
+                });
+            });
+        }
+        else {
+            session.send('Sorry, I did not understand \'%s\'.', session.message.text);
+        }
     });
 
 bot.dialog('/', intents);
@@ -249,7 +246,7 @@ const isSkypeAttachment = attachment => {
     return url.parse(attachment.contentUrl).hostname.substr(-'skype.com'.length) === 'skype.com';
 };
 
-/**
+/** 
  * Gets the href value in an anchor element.
  * Skype transforms raw urls to html. Here we extract the href value from the url
  * @param {string} input Anchor Tag
