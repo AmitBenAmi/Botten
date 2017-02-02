@@ -159,12 +159,8 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
             var oxfordEmotion = require("node-oxford-emotion")("fbe5dde1aecc4b52aab90285d2dcb2c2");
 
             // Reading in bytes
-            session.send('a', session.message.text);
-            var http = require('http');
-            session.send('b', session.message.text);
-            session.send('attachment\n\n', session.message.text);
-            session.send(session.message.attachments[0].contentUrl, session.message.text);
-            http.get(session.message.attachments[0].contentUrl, (res) => {
+            var https = require('https');
+            https.get(session.message.attachments[0].contentUrl, (res) => {
                session.send('c', session.message.text);
                 var imageData = [];
 session.send('d', session.message.text);
