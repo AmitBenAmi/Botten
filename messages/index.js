@@ -219,12 +219,12 @@ if (useEmulator) {
 //=========================================================
 // Utilities
 //=========================================================
-const hasImageAttachment = session => {
+function hasImageAttachment (session) {
     return session.message.attachments.length > 0 &&
         session.message.attachments[0].contentType.indexOf('image') !== -1;
 };
 
-const getImageStreamFromUrl = attachment => {
+function getImageStreamFromUrl (attachment)  {
     var headers = {};
     if (isSkypeAttachment(attachment)) {
         // The Skype attachment URLs are secured by JwtToken,

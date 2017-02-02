@@ -1,0 +1,23 @@
+{
+  "name": "botten",
+  "version": "0.0.0",
+  "description": "Dan",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bavazur/Botten.git"
+  },
+  "author": "Rotem",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bavazur/Botten/issues"
+  },
+  "homepage": "https://github.com/Bavazur/Botten#readme",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}
