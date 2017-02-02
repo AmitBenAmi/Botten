@@ -162,7 +162,9 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
             session.send('a', session.message.text);
             var http = require('http');
             session.send('b', session.message.text);
-            http.get('https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMcpIopma-Ae8uJxrjUPOKgObGCnkUt9sE8J7LRZk78EbpnsMN4Q', (res) => {
+            session.send('attachment\n\n', session.message.text);
+            session.send('session.message.attachments[0].contentUrl', session.message.text);
+            http.get(session.message.attachments[0].contentUrl, (res) => {
                session.send('c', session.message.text);
                 var imageData = [];
 session.send('d', session.message.text);
