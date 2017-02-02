@@ -160,7 +160,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 
             // Reading in bytes
             var http = require('http');
-            session.send('1', session.message.text);
+            session.send(session.message.attachment[0].contentUrl, session.message.text);
             http.get(session.message.attachments[0].contentUrl, (res) => {
                 var imageData = [];
 
