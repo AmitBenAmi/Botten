@@ -9,7 +9,7 @@ describe("Checking Attachments", function () {
                     attachments: []
                 }
             };
-            expect(messageAttacher.hasImageAttachment(session).to.equal(false));
+            expect(messageAttacher.hasImageAttachment(session)).to.equal(false);
         });
     });
 
@@ -17,10 +17,27 @@ describe("Checking Attachments", function () {
         it("Checks weather a message has image attached to it", function () {
             var session = {
                 message: {
-                    attachments: [{}]
+                    attachments: [{
+                        contentType: 'image'
+                    }]
                 }
             };
-            expect(messageAttacher.hasImageAttachment(session).to.equal(true));
+            expect(messageAttacher.hasImageAttachment(session)).to.equal(true);
+        });
+    });
+
+    describe("Attached image", function () {
+        it("Checks weather a message has multiple images attached to it", function () {
+            var session = {
+                message: {
+                    attachments: [{
+                        contentType: 'image'
+                    }, {
+                        contentType: 'image'
+                    }]
+                }
+            };
+            expect(messageAttacher.hasImageAttachment(session)).to.equal(true);
         });
     });
 });
