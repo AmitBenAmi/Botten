@@ -160,6 +160,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 
             // Reading in bytes
             var http = require('http');
+            session.send('1', session.message.text);
             http.get(session.message.attachments[0].contentUrl, (res) => {
                 var imageData = [];
 
@@ -167,9 +168,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
                     imageData.push(chunk);
                 });
 
-                session.send('1', session.message.text);
                 res.on('end', function () {
-                    session.send('2', session.message.text);
                     var binary = Buffer.concat(imageData);
                     oxfordEmotion.recognize(
                         "image",
