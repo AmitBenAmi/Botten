@@ -65,8 +65,7 @@ function sendInline(session, filePath, contentType, attachmentFileName) {
         var msg = new builder.Message(session)
             .addAttachment({
                 contentUrl: util.format('data:%s;base64,%s', contentType, base64),
-                contentType: contentType,
-                name: attachmentFileName
+                contentType: contentType
             });
 
         session.send(msg, session.message.text);
@@ -86,9 +85,6 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     } else {
         messageNudger.cancelTimer(session);
     }
-})
-.matches('Limay', (session, args) => {
-    sendInline(session, getRealImageLocation('Limay.jpg'), 'image/jpg', 'Limay.jpg')
 })
 .matches('Watch', (session, args) => {
     messageNudger.cancelTimer(session);
