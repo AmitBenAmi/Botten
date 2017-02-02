@@ -89,24 +89,20 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('Watch', (session, args) => {
     messageNudger.cancelTimer(session);
 
-    var moviesCallback = function (movies) {
+    var moviesCallback = function (movie) {
 
         var messageBack = 'When you have some free time you should go see \'';
-        for (var i = 0; i < movies.length; i++) {
-            messageBack += movies[i].title + '\'. It\'s a real great movie..\n\n';
-            messageBack += movies[i].image;
-        }
+        messageBack += movie.title + '\'. It\'s a real great movie..\n\n';
+        messageBack += movie.image;
 
         session.send(messageBack, session.message.text);
     };
 
-    var showsCallback = function (shows) {
+    var showsCallback = function (show) {
 
         var messageBack = 'I\'ve heard about a real good show called \'';
-        for (var i = 0; i < shows.length; i++) {
-            messageBack += shows[i].title + '\'.\n\n';
-            messageBack += shows[i].image;
-        }
+        messageBack += show.title + '\'.\n\n';
+        messageBack += show.image;
 
         session.send(messageBack, session.message.text);
     };
@@ -116,7 +112,6 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 
     if (entity) {
         //trakttv.FindPopularMovies(moviesCallback);
-        session.send('my entity' + entity.entity, session.message.text);
         trakttv.searchForItem(entity.entity, moviesCallback);
     }
     else {
