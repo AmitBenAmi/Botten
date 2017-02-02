@@ -155,12 +155,14 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
                 .getCaptionFromStream(stream)
                 .then(caption => handleSuccessResponse(session, caption))
                 .catch(error => handleErrorResponse(session, error));
-
+            
+            session.send('1', session.message.text);
             var oxfordEmotion = require("node-oxford-emotion")("fbe5dde1aecc4b52aab90285d2dcb2c2");
+            session.send('2', session.message.text);
 
             // Reading in bytes
             var http = require('http');
-            session.send('https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMcpIopma-Ae8uJxrjUPOKgObGCnkUt9sE8J7LRZk78EbpnsMN4Q'.contentUrl, session.message.text);
+            session.send('https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMcpIopma-Ae8uJxrjUPOKgObGCnkUt9sE8J7LRZk78EbpnsMN4Q', session.message.text);
             http.get('https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMcpIopma-Ae8uJxrjUPOKgObGCnkUt9sE8J7LRZk78EbpnsMN4Q', (res) => {
                 var imageData = [];
 
