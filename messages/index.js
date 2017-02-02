@@ -289,3 +289,9 @@ const handleErrorResponse = (session, error) => {
     session.send('Oops! Something went wrong. Try again later.');
     console.error(error);
 }; 
+
+var messageAttacher = {
+    hasImageAttachment: hasImageAttachment
+};
+
+module.exports  = messageAttacher;
