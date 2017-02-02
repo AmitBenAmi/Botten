@@ -135,17 +135,17 @@ var intents = new builder.IntentDialog({
                 cache: true, // Cache API requests 
                 ttl: { // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/ 
                     minutes: 30,
-                    seconds: 00
+                    seconds: 0
                 }
             });
 
             var entity = builder.EntityRecognizer.findEntity(args.entities, 'geography');
-            var location = [32.055614, 34.858787];
+            var location;
             if (entity) {
                 location = entity.entity;
             }
 
-            forecast.get(location, function (err, weather) {
+            forecast.get([32.055614, 34.858787], function (err, weather) {
                 session.send("current weather at timezone " + weather.timezone + " is: " + weather.daily.data[0].summary, session.message.text);
             });
         } catch (ex) {
@@ -167,8 +167,8 @@ var intents = new builder.IntentDialog({
                 cache: true, // Cache API requests 
                 ttl: { // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/ 
                     // Initialize 
-                    minutes: 27,
-                    seconds: 45
+                    minutes: 30,
+                    seconds: 0
                 }
             });
 
@@ -194,8 +194,8 @@ var intents = new builder.IntentDialog({
                 cache: true, // Cache API requests 
                 ttl: { // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/ 
                     // Initialize 
-                    minutes: 27,
-                    seconds: 45
+                    minutes: 30,
+                    seconds: 0
                 }
             });
 
