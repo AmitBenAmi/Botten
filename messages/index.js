@@ -46,37 +46,12 @@ var nudger = require('./nudger');
 var trakttv = require('../SeriesAPI/Trakt.tv');
 var messageNudger = new nudger();
 var Forecast = require('forecast');
-var fs = require('fs');
-var util = require('util');
-var path = require('path');
-
-function getRealImageLocation(imageName) {
-    return (path.resolve(__dirname + '/../Images', imageName));
-};
-
-function sendInline(session, filePath, contentType, attachmentFileName) {
-    fs.readFile(filePath, (err, data) => {
-        if (err) {
-            return session.send('Oops. Error reading file. Error: ' + err.message, session.message.text);
-        }
-
-        var base64 = Buffer.from(data).toString('base64');
-
-        var msg = new builder.Message(session)
-            .addAttachment({
-                contentUrl: util.format('data:%s;base64,%s', contentType, base64),
-                contentType: contentType
-            });
-
-        session.send(msg, session.message.text);
-    });
-};
 
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({
-        recognizers: [recognizer]
-    })
+    recognizers: [recognizer]
+})
     /*
     .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
     */
@@ -139,14 +114,8 @@ var intents = new builder.IntentDialog({
                 }
             });
 
-            var entity = builder.EntityRecognizer.findEntity(args.entities, 'geography');
-            var location;
-            if (entity) {
-                location = entity.entity;
-            }
-
-            forecast.get([32.055614, 34.858787], function (err, weather) {
-                session.send("current weather at timezone " + weather.timezone + " is: " + weather.daily.data[0].summary, session.message.text);
+            forecast.get([32.175582, 34.889892], function (err, weather) {
+                session.send("The weather at " + weather.timezone.substr(weather.timezone.indexOf('/') + 1) + " is " + weather.currently.summary, session.message.text);
             });
         } catch (ex) {
             session.send("Weather error", session.message.text);
@@ -156,7 +125,7 @@ var intents = new builder.IntentDialog({
     .matches('surf', (session, args) => {
         messageNudger.cancelTimer(session);
         var user = session.message.address.user.name;
-        session.send(`${ user } you asked about surfing !`, session.message.text);
+        session.send(`${user} you asked about surfing !`, session.message.text);
 
         messageNudger.cancelTimer(session);
         try {
@@ -172,55 +141,24 @@ var intents = new builder.IntentDialog({
                 }
             });
 
-            forecast.get([32.055614, 34.858787], function (err, weather) {
-                session.send("current weather at timezone " + weather.timezone + " is: " + weather.daily.data[0].summary, session.message.text);
+            forecast.get([32.175582, 34.889892], function (err, weather) {
+                session.send("The weather at " + weather.timezone.substr(weather.timezone.indexOf('/') + 1) + " is " + weather.currently.summary, session.message.text);
             });
         } catch (ex) {
             session.send("Weather error", session.message.text);
         }
-    })
-    .matches('shani', (session, args) => {
-        messageNudger.cancelTimer(session);
-        session.send('is the best', session.message.text);
     })
     .onDefault((session) => {
-        try {
-
-
-            var forecast = new Forecast({
-                service: 'darksky',
-                key: '6deb2af77d2dce8586af8ca9928faadf',
-                units: 'celcius',
-                cache: true, // Cache API requests 
-                ttl: { // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/ 
-                    // Initialize 
-                    minutes: 30,
-                    seconds: 0
-                }
-            });
-
-            forecast.get([32.055614, 34.858787], function (err, weather) {
-                var strNextDays;
-
-                weather.daily.data.forEach(function (element) {
-                    strNextDays += element;
-                }, this);
-            });
-
-            // rotem
-            if (hasImageAttachment(session)) {
-                var stream = getImageStreamFromUrl(session.message.attachments[0]);
-                captionService
-                    .getCaptionFromStream(stream)
-                    .then(caption => handleSuccessResponse(session, caption))
-                    .catch(error => handleErrorResponse(session, error));
-            } else {
-                session.send('Sorry, I did not understand \'%s\'.', session.message.text);
-            }
-        } catch (ex) {
-            session.send("Weather error", session.message.text);
+        // rotem
+        if (hasImageAttachment(session)) {
+            var stream = getImageStreamFromUrl(session.message.attachments[0]);
+            captionService
+                .getCaptionFromStream(stream)
+                .then(caption => handleSuccessResponse(session, caption))
+                .catch(error => handleErrorResponse(session, error));
+        } else {
+            session.send('Sorry, I did not understand \'%s\'.', session.message.text);
         }
-
     });
 
 bot.dialog('/', intents);
