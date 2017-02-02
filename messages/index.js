@@ -293,5 +293,3 @@ const handleErrorResponse = (session, error) => {
 var messageAttacher = {
     hasImageAttachment: hasImageAttachment
 };
-
-//module.exports  = messageAttacher;

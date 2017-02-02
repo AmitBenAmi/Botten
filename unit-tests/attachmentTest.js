@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var messageAttacher = require('../messages/index.js');
+var messageAttacher = require('../messages/Attachments.js');
 
 describe("Checking Attachments", function () {
     describe("No attached image", function () {
