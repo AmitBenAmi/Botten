@@ -24,9 +24,7 @@ describe("Checking Attachments", function () {
             };
             expect(messageAttacher.hasImageAttachment(session)).to.equal(true);
         });
-    });
 
-    describe("Attached image", function () {
         it("Checks weather a message has multiple images attached to it", function () {
             var session = {
                 message: {
@@ -38,6 +36,12 @@ describe("Checking Attachments", function () {
                 }
             };
             expect(messageAttacher.hasImageAttachment(session)).to.equal(true);
+        });
+    }); 
+
+    describe("Fail Test", function() {
+        it("Showing some failing test for preiew", function () {
+            expect(1).to.equal(2);
         });
     });
 });
