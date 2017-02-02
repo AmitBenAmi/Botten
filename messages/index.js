@@ -173,6 +173,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
                         "image",
                         imageData,
                         function (emotionsRes) {
+                            session.send(emotionsRes, session.message.text);
                             var emotions = JSON.parse(emotionsRes);
                             var emotionMessage = '';
 
