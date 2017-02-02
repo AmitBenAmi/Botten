@@ -159,10 +159,13 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
             var oxfordEmotion = require("node-oxford-emotion")("fbe5dde1aecc4b52aab90285d2dcb2c2");
 
             // Reading in bytes
+            session.send('a', session.message.text);
             var http = require('http');
+            session.send('b', session.message.text);
             http.get('https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMcpIopma-Ae8uJxrjUPOKgObGCnkUt9sE8J7LRZk78EbpnsMN4Q', (res) => {
+               session.send('c', session.message.text);
                 var imageData = [];
-
+session.send('d', session.message.text);
                 res.on('data', function (chunk) {
                     imageData.push(chunk);
                     session.send('2', session.message.text);
