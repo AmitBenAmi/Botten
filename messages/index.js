@@ -294,4 +294,4 @@ var messageAttacher = {
     hasImageAttachment: hasImageAttachment
 };
 
-module.exports  = messageAttacher;
+//module.exports  = messageAttacher;
