@@ -61,6 +61,11 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
             messageNudger.cancelTimer(session);
         }
     })
+     .matches('shani', (session, args) => {
+         session.send("Shani is leaving on the 15.3.17", session.message.text);
+
+         session.send("@רואי ווייצפלד", session.message.text);
+    })
     .matches('Watch', (session, args) => {
         messageNudger.cancelTimer(session);
 
